@@ -1,0 +1,19 @@
+{
+  "name": "api-udt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type":"module",
+  "scripts": {
+    "dev": "node --watch ./src/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "standard": "^17.1.0"
+  },
+  "dependencies": {
+    "cors": "2.8.5",
+    "express": "5.0.0-beta.2"
+  }
+}

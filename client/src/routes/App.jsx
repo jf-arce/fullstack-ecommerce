@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { Link, Outlet } from "react-router-dom";
 
 export default function App() {
+
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
       <aside className="bg-neutral-900 px-8 py-5 flex flex-col gap-5 text-white">

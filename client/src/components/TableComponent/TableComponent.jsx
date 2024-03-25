@@ -38,14 +38,13 @@ export const TableComponent = ({data,columns,itemsPerPage}) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {currentItems.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell className="font-medium">{product.id}</TableCell>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{product.brand}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell>{0}</TableCell>
-              <TableCell>{product.price}</TableCell>
+          {currentItems.map((data) => (
+            <TableRow key={data.id}>
+              {columns.map((column) => (
+                <TableCell key={column.accesorKey}>
+                  {data[column.accesorKey]}
+                </TableCell>
+              ))}
               <TableCell>
                 <div className="flex items-center gap-4 justify-end">
                   <IconButton

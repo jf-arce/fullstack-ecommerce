@@ -1,10 +1,9 @@
 import { Router } from "express";
 import { readJson } from "../utils/readFiles.js";
+import { ProductController } from "../controllers/products.controller.js";
 
 const products = readJson('src/db/products.json');
 
 export const productsRouter = Router();    
 
-productsRouter.get('/', (req, res) => {
-    res.json(products);
-});
+productsRouter.get('/', ProductController.getAll);

@@ -7,6 +7,7 @@ import { Theme } from '@radix-ui/themes'
 import App from './routes/App'
 import ErrorPage from './routes/ErrorPage'
 import Products from './routes/Products';
+import Users from './routes/Users';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/users', 
-        element: <h1>Users</h1>,
+        element: <Users/>,
       },
       {
         path: '/products', 

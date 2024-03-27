@@ -1,4 +1,5 @@
 import { ButtonCustom } from "@/components/ButtonCustom/ButtonCustom";
+import ContainerComponents from "@/components/ContainerComponents";
 import { Search } from "@/components/Search";
 import { TableComponent } from "@/components/TableComponent/TableComponent";
 import { usersColumns } from "@/components/TableComponent/columns/usersColumns";
@@ -39,12 +40,14 @@ export default function Users() {
   };
 
   return (
-    <main className="bg-neutral-800 h-full px-10 py-5 flex flex-col gap-6">
+    <main className="h-full px-10 py-5 flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <Search handleFilter={handleFilter} placeholder="Buscar por nombre" />
         <ButtonCustom />
       </div>
-      <TableComponent {...tableConfig} />
+      <ContainerComponents>
+        <TableComponent {...tableConfig} />
+      </ContainerComponents>
     </main>
   );
 }

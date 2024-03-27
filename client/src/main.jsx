@@ -8,6 +8,7 @@ import App from './routes/App'
 import ErrorPage from './routes/ErrorPage'
 import Products from './routes/Products';
 import Users from './routes/Users';
+import Dashboard from './routes/Dashboard';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     element: <App/>,
     errorElement: <ErrorPage/>,
     children: [
+      {
+        path: '/dashboard', 
+        element: <Dashboard/>,
+      },
       {
         path: '/users', 
         element: <Users/>,

@@ -12,7 +12,7 @@ export const NavBar = () => {
       <ul className="flex flex-col gap-4">
         <li className="flex gap-2 items-center hover:font-black hover:translate-x-6 transition-all hover:text-blue-800">
             <MdSpaceDashboard/>
-          <Link to="/">Dashboard</Link>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li className="flex gap-2 items-center hover:font-black hover:translate-x-6 transition-all hover:text-blue-800">
             <FaUsers/>

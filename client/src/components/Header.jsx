@@ -10,6 +10,9 @@ export const Header = () => {
 
   useEffect(()=>{
     switch (pathname) {
+      case '/dashboard':
+        setTitle('Dashboard');
+        break;
       case '/users':
         setTitle('Usuarios');
         break;
@@ -32,8 +35,8 @@ export const Header = () => {
   },[pathname])
   
   return (
-    <header className="flex items-center gap-6 justify-between bg-neutral-900 py-5 px-8 border-l-[1px] border-neutral-700">
-      <h1 className="text-white text-2xl">{title}</h1>
+    <header className="flex items-center gap-6 justify-between py-5 px-10 ">
+      <h1 className="text-white text-2xl font-bold">{title}</h1>
       <Avatar>
         <AvatarImage src="https://github.com/shadcn.png" />
         <AvatarFallback>CN</AvatarFallback>

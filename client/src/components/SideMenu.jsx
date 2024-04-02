@@ -7,7 +7,7 @@ export const SideMenu = () => {
     <aside className="px-8 py-5 flex flex-col gap-5 text-white bg-slate-950">
       <div className="flex justify-between">
         <Link to="/">
-          <h1 className="text-xl font-bold">Urban Drip Store DB</h1>
+          <h1 className="text-xl font-bold">E-commerce manager</h1>
         </Link>
         <IconButton variant="solid" highContrast style={{ cursor: "pointer" }}>
           <IoMdNotificationsOutline />

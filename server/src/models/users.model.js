@@ -6,7 +6,7 @@ export class UserModel{
             console.log(name);
             const [users] = await connection.query(
                 `SELECT * FROM vistaclientesregistrados WHERE LOWER(nombre_usuario) LIKE ?`,
-                [`%${name.toLowerCase()}%`]
+                [`${name.toLowerCase()}%`]
             ) 
             return users;
         }

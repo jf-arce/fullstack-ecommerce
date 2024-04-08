@@ -3,12 +3,14 @@ import ContainerComponents from "@/components/ContainerComponents";
 import { Search } from "@/components/Search";
 import { TableComponent } from "@/components/TableComponent/TableComponent";
 import { usersColumns } from "@/components/TableComponent/columns/usersColumns";
-import { getAllUsers } from "@/lib/getData";
+import { getAllUsers, getUsersFilteredByName } from "@/lib/getData";
 import { useEffect, useState } from "react";
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     getAllUsers().then((users) => {
@@ -25,13 +27,30 @@ export default function Users() {
     });
   }, []);
 
-  const handleFilter = (search) => {
-    const userFiltered = users.filter((user) =>
-      user.nombre.toLowerCase().includes(search.toLowerCase()) || 
-      user.userName.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredUsers(userFiltered);
-  };
+  useEffect(()=>{
+    if(searchTerm){
+      getUsersFilteredByName(searchTerm).then((users)=>{
+        if(users){
+          setFilteredUsers(
+            users.map((user) => ({
+              id: user.idUsuario,
+              userName: user.nombre_usuario,
+              nombre: user.nombre_cliente,
+              correo: user.correo,
+              telefono: user.telefono,
+              direccion: user.direccion,
+            }))
+          );
+        }
+      })
+    }else{
+      setFilteredUsers([]);
+    }
+  },[searchTerm])
+  
+  const handleFilter = useDebouncedCallback((search) => {
+    setSearchTerm(search);
+  },300);
 
   const tableConfig = {
     data: filteredUsers.length > 0 ? filteredUsers : users,

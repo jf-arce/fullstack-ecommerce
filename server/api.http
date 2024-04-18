@@ -3,4 +3,7 @@ GET http://localhost:1234/products
 GET http://localhost:1234/users
 ###
 GET http://localhost:1234/users/?name=JUAN
+
+###
+GET http://localhost:1234/products/?name=buzo
  

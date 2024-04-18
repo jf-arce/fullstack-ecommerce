@@ -1,10 +1,9 @@
 import { ButtonCustom } from "@/components/ButtonCustom/ButtonCustom";
 import { TableComponent } from "@/components/TableComponent/TableComponent";
 import { useEffect, useState } from "react";
-import { getAllProducts } from "@/lib/getData";
+import { getAllProducts, getProductsFilteredByName } from "@/lib/getData";
 import { productsColumns } from "@/components/TableComponent/columns/productsColumns";
 import { Search } from "@/components/Search";
-import { useFiltered } from "@/hooks/useFiltered";
 import {
   Dialog,
   DialogContent,
@@ -18,10 +17,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import ContainerComponents from "@/components/ContainerComponents";
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     getAllProducts().then((products) =>
@@ -38,10 +39,31 @@ export default function Products() {
     );
   }, []);
 
-  const handleFilter = (search) => {
-    const productFiltered = useFiltered(products, search, "name");
-    setFilteredProducts(productFiltered);
-  };
+  useEffect(()=>{
+    if(searchTerm){
+      getProductsFilteredByName(searchTerm)
+        .then((prod)=>{
+          if(prod){
+            setFilteredProducts(
+              prod.map((prod) => ({
+                id: prod.idProducto,
+                name: prod.nombre,
+                price: prod.precio,
+                brand: prod.marca,
+                category: prod.categoria,
+                stock: prod.stock,
+              }))
+            )
+          }
+        })
+    }else{
+      setFilteredProducts([]);
+    }
+  },[searchTerm])
+
+  const handleFilter = useDebouncedCallback((search) => {
+    setSearchTerm(search);
+  },300) 
 
   const tableConfig = {
     data: filteredProducts.length > 0 ? filteredProducts : products,

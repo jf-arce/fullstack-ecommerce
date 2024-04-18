@@ -30,3 +30,14 @@ export const getUsersFilteredByName = async(name)=>{
         console.log(err);
     }
 }
+
+export const getProductsFilteredByName = async(name)=>{
+    try{
+        const res =  await fetch(`http://localhost:1234/products/?name=${name}`);
+        const data = await res.json();
+        
+        return data;
+    }catch(e){
+        console.log(e);
+    }
+}

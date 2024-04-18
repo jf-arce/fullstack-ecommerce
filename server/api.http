@@ -7,3 +7,16 @@ GET http://localhost:1234/users/?name=JUAN
 ###
 GET http://localhost:1234/products/?name=buzo
  
+###
+POST http://localhost:1234/products
+Content-Type: application/json
+
+{
+    "name": "buzo",
+    "brand": "nike",
+    "category": 1,
+    "price": 1000,
+    "stock": 10,
+    "description": "description",
+    "descuento": 20
+}

@@ -7,3 +7,5 @@ const products = readJson('src/db/products.json');
 export const productsRouter = Router();    
 
 productsRouter.get('/', ProductController.getAll);
+
+productsRouter.post('/', ProductController.addProduct)

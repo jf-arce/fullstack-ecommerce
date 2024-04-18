@@ -16,4 +16,20 @@ export class ProductController{
             return res.status(500).json({ message: "Error al obtener productos" });
         }
     }
+
+    static async addProduct(req,res){
+        const{
+            name,
+            brand,
+            category,
+            price,
+            stock,
+            description,
+            sale
+        } = req.body;
+
+        await ProductModel.addProduct({name,brand,category,price,stock,description,sale});
+
+        return res.status(201)
+    }
 }

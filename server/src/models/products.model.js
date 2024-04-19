@@ -19,35 +19,24 @@ export class ProductModel{
     static async addProduct({name,brand,category,price,stock,description,sale}){
         console.log(name,brand,category,price,stock, description, sale);
         //El category es un id y el stock tiene que ir en la otra tabla llamada inventario
-        const [product] = await connection.query(
-            `INSERT INTO Productos (nombre, descripcion, marca, precio, idCategoria, idPromocion)
-            VALUES (?,?,?,?,?)`, [name,description,brand,price,category, sale]
+        const [result] = await connection.query(
+            `INSERT INTO Productos (nombre, descripcion, marca, precio, idCategoria, idPromocion) 
+            VALUES (?,?,?,?,?,?)`, [name,description,brand,price,category, sale]
         );
     
-        const idProducto = product.insertId;
+        //Recuperamos el ultimo id insertado
+        const idProducto = result.insertId;
 
         console.log(idProducto);
 
-        const [inventario] = await connection.query(
-            `INSERT INTO Inventario (idProducto, stock)
-            VALUES (?,?)`, [idProducto, stock]
+        await connection.query(
+            `INSERT INTO Inventario (idProducto, stock) VALUES (?,?)`, [idProducto, stock]
         )
 
-
-        
-        //Insertamos el stock dentro de la tabla inventario con el ultimo idProducto creado
-        // const [idProducto] = await connection.query(
-        //     `SELECT MAX(idProducto) as idProducto FROM Productos`
-        // )
-        
-        /*Otra forma de recuperar el ultimo producto creado en express
-        es con el metodo insertId de la respuesta de la query, osea,
-        const [idProducto] = await connection.query(
-            `INSERT INTO Productos (nombre, descripcion, marca, precio, idCategoria, idPromocion)
-            VALUES (?,?,?,?,?)`, [name,description,brand,price,category, stock]
+        //Falta pasarle el id del talle desde el cliente
+        await connection.query(
+            `INSERT INTO ProductosTalles(idTalle, idProducto) VALUES (1,?)`, [idProducto]
         )
-        const idProducto = idProducto.insertId;
-
-        */
+        
     }
 }

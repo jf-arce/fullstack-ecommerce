@@ -9,3 +9,5 @@ export const productsRouter = Router();
 productsRouter.get('/', ProductController.getAll);
 
 productsRouter.post('/', ProductController.addProduct)
+
+productsRouter.delete('/:id', ProductController.deleteProduct)

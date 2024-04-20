@@ -32,4 +32,15 @@ export class ProductController{
 
         return res.status(201)
     }
+
+    static async deleteProduct(req,res){
+        const {id} = req.params;
+
+        
+        await ProductModel.deleteProduct({id});
+
+        // if (!product) return res.status(404).json({message:"No se encuentra el producto"});
+
+        return res.status(204)
+    }
 }

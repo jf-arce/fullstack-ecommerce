@@ -20,3 +20,6 @@ Content-Type: application/json
     "description": "description",
     "sale": 20
 }
+
+###
+DELETE http://localhost:1234/products/32

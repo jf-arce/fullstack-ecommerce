@@ -17,8 +17,7 @@ export class ProductModel{
     }
 
     static async addProduct({name,brand,category,price,stock,description,sale}){
-        console.log(name,brand,category,price,stock, description, sale);
-        //El category es un id y el stock tiene que ir en la otra tabla llamada inventario
+
         const [result] = await connection.query(
             `INSERT INTO Productos (nombre, descripcion, marca, precio, idCategoria, idPromocion) 
             VALUES (?,?,?,?,?,?)`, [name,description,brand,price,category, sale]
@@ -26,8 +25,6 @@ export class ProductModel{
     
         //Recuperamos el ultimo id insertado
         const idProducto = result.insertId;
-
-        console.log(idProducto);
 
         await connection.query(
             `INSERT INTO Inventario (idProducto, stock) VALUES (?,?)`, [idProducto, stock]
@@ -38,5 +35,25 @@ export class ProductModel{
             `INSERT INTO ProductosTalles(idTalle, idProducto) VALUES (1,?)`, [idProducto]
         )
         
+    }
+
+    static async deleteProduct({id}){
+
+        console.log(id);
+        await connection.query(`
+            DELETE FROM inventario WHERE idProducto = ?
+        `,[id])
+
+        await connection.query(`
+            DELETE FROM productostalles WHERE idProducto = ?
+        `,[id])
+
+        await connection.query(`
+            DELETE FROM productosfavoritos WHERE idProducto = ?
+        `,[id])
+        
+        await connection.query(`
+            DELETE FROM productos WHERE idProducto = ?
+        `,[id])
     }
 }

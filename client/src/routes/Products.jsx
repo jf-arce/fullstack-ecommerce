@@ -6,6 +6,7 @@ import { Search } from "@/components/Search";
 import ContainerComponents from "@/components/ContainerComponents";
 import { useDebouncedCallback } from 'use-debounce';
 import { DialogToAdd } from "@/components/DialogToAdd";
+import { deleteProduct } from "@/lib/deleteData";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -25,7 +26,7 @@ export default function Products() {
         }))
       )
     );
-  }, []);
+  }, [products]);
 
   useEffect(()=>{
     if(searchTerm){
@@ -53,11 +54,20 @@ export default function Products() {
     setSearchTerm(search);
   },300) 
 
+  const handeDelete = (e) =>{
+    const tableRow = e.target.closest("tr");
+    const id = Number(tableRow.children[0].textContent);
+    deleteProduct(id)
+  }
+
   const tableConfig = {
     data: filteredProducts.length > 0 ? filteredProducts : products,
     itemsPerPage: 6,
     columns: productsColumns,
+    handleDelete: handeDelete
   };
+
+ 
 
   return (
     <main className="h-full px-10 py-5 flex flex-col gap-6">
@@ -66,7 +76,7 @@ export default function Products() {
         <DialogToAdd/>
       </div>
       <ContainerComponents>
-        <TableComponent {...tableConfig} />
+        <TableComponent {...tableConfig}/>
       </ContainerComponents>
     </main>
   );

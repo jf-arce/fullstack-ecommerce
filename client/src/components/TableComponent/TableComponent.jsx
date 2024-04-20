@@ -12,7 +12,7 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 import { PaginationComponent } from "./PaginationComponent.jsx";
 import { useState } from "react";
 
-export const TableComponent = ({data,columns,itemsPerPage}) => {
+export const TableComponent = ({data,columns,itemsPerPage, handleDelete }) => {
  
   const [currentPage, setCurrentPage] = useState(1);
   
@@ -58,6 +58,7 @@ export const TableComponent = ({data,columns,itemsPerPage}) => {
                     variant="solid"
                     highContrast
                     style={{ cursor: "pointer" }}
+                    onClick={handleDelete}
                   >
                     <FaTrash />
                   </IconButton>

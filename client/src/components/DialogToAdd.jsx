@@ -11,12 +11,22 @@ import { ButtonCustom } from "@/components/ButtonCustom/ButtonCustom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createNewProduct } from "@/lib/postData";
+import { getAllCategories } from "@/lib/getData";
 
 //Traer las distintas promociones que existen  en la base de datos para mostrarlas en el dialog
 
 export const DialogToAdd = () => {
+
+  const [categories, setCategories ]= useState([]);
+
+  //Fetch de categorias
+  useEffect(()=>{
+    getAllCategories().then((data) => {
+      setCategories(data);
+    });
+  },[])
   //Ejemplo de promociones para probar
   const promociones = [
     {
@@ -101,46 +111,58 @@ export const DialogToAdd = () => {
           <DialogHeader>
             <DialogTitle>Agregar nuevo producto</DialogTitle>
           </DialogHeader>
+          {/*Formulario */}
           <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
+            {/*Nombre */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
                 Nombre
               </Label>
               <Input id="name" className="col-span-3" />
             </div>
+            {/*Marca */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="brand" className="text-right">
                 Marca
               </Label>
               <Input id="brand" className="col-span-3" />
             </div>
+            {/*Categoria */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="category" className="text-right">
                 Categoria
               </Label>
-              <Input id="category" className="col-span-3" />
+              <select id="category" className="col-span-3">
+                {categories.map(((cat, index) => (
+                  <option value={cat.idCategoria} key={index}>{cat.nombre}</option>
+                )))}
+              </select>
             </div>
+            {/*Precio */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="price" className="text-right">
                 Precio
               </Label>
-              <Input id="price" className="col-span-3" />
+              <Input id="price" className="col-span-3" type="number"/>
             </div>
+            {/*Stock */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="stock" className="text-right">
                 Stock
               </Label>
-              <Input id="stock" className="col-span-3" />
+              <Input id="stock" className="col-span-3" type="number"/>
             </div>
+            {/*Descripcion */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="description" className="text-right">
                 Descripcion
               </Label>
               <Input id="description" className="col-span-3" />
             </div>
+            {/*Talles */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="size" className="text-right">
-                Talles disponibles del producto
+                Talles disponibles
               </Label>
               <div className="flex items-center gap-3">
                 <input type="checkbox" id="xs" name="xs" value="1" />

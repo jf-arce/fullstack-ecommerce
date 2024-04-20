@@ -1,32 +1,20 @@
 import { TableComponent } from "@/components/TableComponent/TableComponent";
 import { useEffect, useState } from "react";
-import { getAllProducts, getProductsFilteredByName } from "@/lib/getData";
+import { getProductsFilteredByName, getAllCategories } from "@/lib/getData";
 import { productsColumns } from "@/components/TableComponent/columns/productsColumns";
 import { Search } from "@/components/Search";
 import ContainerComponents from "@/components/ContainerComponents";
 import { useDebouncedCallback } from 'use-debounce';
 import { DialogToAdd } from "@/components/DialogToAdd";
 import { deleteProduct } from "@/lib/deleteData";
+import useGetProducts from "@/hooks/useGetProducts";
 
 export default function Products() {
-  const [products, setProducts] = useState([]);
+
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    getAllProducts().then((products) =>
-      setProducts(
-        products.map((prod) => ({
-          id: prod.idProducto,
-          name: prod.nombre,
-          price: prod.precio,
-          brand: prod.marca,
-          category: prod.categoria,
-          stock: prod.stock,
-        }))
-      )
-    );
-  }, [products]);
+  const products = useGetProducts();
 
   useEffect(()=>{
     if(searchTerm){
@@ -67,12 +55,10 @@ export default function Products() {
     handleDelete: handeDelete
   };
 
- 
-
   return (
     <main className="h-full px-10 py-5 flex flex-col gap-6">
       <div className="flex justify-between items-center">
-        <Search handleFilter={handleFilter} placeholder="Buscar por nombre" />
+        <Search handleFilter={handleFilter} placeholder="Buscar por nombre"/>
         <DialogToAdd/>
       </div>
       <ContainerComponents>

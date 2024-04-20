@@ -23,3 +23,8 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:1234/products/32
+
+
+
+###
+GET http://localhost:1234/categories

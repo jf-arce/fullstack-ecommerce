@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { productsRouter } from './routes/products.routes.js';
 import { usersRouter } from './routes/users.routes.js';
+import { categoriesRouter } from './routes/categories.routes.js';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(cors());
 
 app.use('/products', productsRouter);
 app.use('/users', usersRouter);
+app.use('/categories', categoriesRouter);
 
 const port = process.env.PORT ?? 1234
 

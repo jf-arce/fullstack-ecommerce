@@ -8,6 +8,32 @@
   --primaryColor: rgb(24, 35, 84);
 }
 
+/*Inputs de busqueda*/
+.search-input:focus {
+  box-shadow: none;
+  border: none;
+}
+input:focus{
+  border: none;
+  outline: none;
+}
+
+input[type="checkbox"] {
+  border-radius: 3px;
+  color: var(--primaryColor);
+  &:focus{
+    box-shadow: none;
+    border: solid 1px var(--primaryColor);
+  }
+} 
+input[type="radio"]{
+  color: var(--primaryColor);
+  &:focus{
+    box-shadow: none;
+    border: solid 1px var(--primaryColor);
+  }
+}
+
 
 @layer base {
   :root {

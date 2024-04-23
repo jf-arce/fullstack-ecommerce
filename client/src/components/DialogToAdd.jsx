@@ -15,11 +15,17 @@ import { useState, useEffect } from "react";
 import { createNewProduct } from "@/lib/postData";
 import { getAllCategories } from "@/lib/getData";
 
-//Traer las distintas promociones que existen  en la base de datos para mostrarlas en el dialog
+const getAllPromotions = async () => {
+  const res = await fetch("http://localhost:1234/promotions");
+  const data = await res.json();
+
+  return data;
+}
 
 export const DialogToAdd = () => {
 
   const [categories, setCategories ]= useState([]);
+  const [promotions, setPromotions] = useState([]);
 
   //Fetch de categorias
   useEffect(()=>{
@@ -27,44 +33,26 @@ export const DialogToAdd = () => {
       setCategories(data);
     });
   },[])
-  //Ejemplo de promociones para probar
-  const promociones = [
-    {
-      id: 1,
-      descripcion: "Promocion de verano",
-      descuento: 20,
-      fechaInicio: "2021-12-01",
-      fechaFin: "2021-12-31",
-      estado: "Activa",
-    },
-    {
-      id: 2,
-      descripcion: "Promocion de invierno",
-      descuento: 30,
-      fechaInicio: "2021-06-01",
-      fechaFin: "2021-06-30",
-      estado: "Activa",
-    },
-    {
-      id: 3,
-      descripcion: "Promocion de otoño",
-      descuento: 10,
-      fechaInicio: "2021-03-01",
-      fechaFin: "2021-03-31",
-      estado: "Activa",
-    },
-    {
-      id: 4,
-      descripcion: "Promocion de primavera",
-      descuento: 15,
-      fechaInicio: "2021-09-01",
-      fechaFin: "2021-09-30",
-      estado: "Activa",
-    },
-  ];
+
+  //Traer las distintas promociones que existen  en la base de datos para mostrarlas en el dialog
+  useEffect(()=>{
+    getAllPromotions().then((proms)=>{
+      setPromotions(proms.map(prom => {
+        return {
+          id: prom.idPromocion,
+          descripcion: prom.descripcion,
+          descuento: prom.descuento,
+          fechaInicio: prom.fechaInicio,
+          fechaFin: prom.fechaFin,
+          estado: prom.estado,
+        }
+      }));
+    });
+  },[])
 
   const [hasPromotion, setHasPromotion] = useState(false);
 
+  //Hacer: Cuando cierra el dialog tiene que volver el estado a false
   const handlePromotion = (e) => {
     if (e.target.value === "yes") {
       setHasPromotion(true);
@@ -208,8 +196,8 @@ export const DialogToAdd = () => {
                   <Label htmlFor="sale" className="text-right">
                     Seleccionar promocion
                   </Label>
-                  <select id="sale" className="col-span-3">
-                    {promociones.map((promo) => (
+                  <select id="sale" className="col-span-3 w-full">
+                    {promotions.map((promo) => (
                       <option key={promo.id} value={promo.id}>
                         {promo.descripcion}
                       </option>

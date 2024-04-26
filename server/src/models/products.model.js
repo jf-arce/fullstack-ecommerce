@@ -18,22 +18,25 @@ export class ProductModel{
 
     static async addProduct({name,brand,category,price,stock,description,sale}){
 
-        const [result] = await connection.query(
-            `INSERT INTO Productos (nombre, descripcion, marca, precio, idCategoria, idPromocion) 
-            VALUES (?,?,?,?,?,?)`, [name,description,brand,price,category, sale]
-        );
+
+        console.log(name,brand,category,price,stock, description,sale);
+
+        // const [result] = await connection.query(
+        //     `INSERT INTO Productos (nombre, descripcion, marca, precio, idCategoria, idPromocion) 
+        //     VALUES (?,?,?,?,?,?)`, [name,description,brand,price,category, sale]
+        // );
     
-        //Recuperamos el ultimo id insertado
-        const idProducto = result.insertId;
+        // //Recuperamos el ultimo id insertado
+        // const idProducto = result.insertId;
 
-        await connection.query(
-            `INSERT INTO Inventario (idProducto, stock) VALUES (?,?)`, [idProducto, stock]
-        )
+        // await connection.query(
+        //     `INSERT INTO Inventario (idProducto, stock) VALUES (?,?)`, [idProducto, stock]
+        // )
 
-        //Falta pasarle el id del talle desde el cliente
-        await connection.query(
-            `INSERT INTO ProductosTalles(idTalle, idProducto) VALUES (1,?)`, [idProducto]
-        )
+        // //Falta pasarle el id del talle desde el cliente
+        // await connection.query(
+        //     `INSERT INTO ProductosTalles(idTalle, idProducto) VALUES (1,?)`, [idProducto]
+        // )
         
     }
 

@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogClose
 } from "@/components/ui/dialog";
 import { ButtonCustom } from "@/components/ButtonCustom/ButtonCustom";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { createNewProduct } from "@/lib/postData";
 import { getAllCategories } from "@/lib/getData";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const getAllPromotions = async () => {
   const res = await fetch("http://localhost:1234/promotions");
@@ -87,6 +90,19 @@ export const DialogToAdd = () => {
     };
 
     createNewProduct(newProduct);
+    toast('Producto agregado!',{
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      newestOnTop: false,
+      closeOnClick: true,
+      rtl:false,
+      pauseOnFocusLoss: true,
+      draggable: true,
+      pauseOnHover: true,
+      theme:"light",
+      transition: Bounce
+    })
   };
 
   return (
@@ -206,12 +222,15 @@ export const DialogToAdd = () => {
                 </div>
               )
             }
-            <DialogFooter>
-              <Button type="submit">Guardar</Button>
+            <DialogFooter>   
+              <DialogClose asChild>
+                <Button type="submit">Guardar</Button>
+              </DialogClose>           
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
+      <ToastContainer/>
     </>
   );
 };

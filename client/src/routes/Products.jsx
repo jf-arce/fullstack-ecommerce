@@ -1,6 +1,5 @@
 import { TableComponent } from "@/components/TableComponent/TableComponent";
-import { useEffect, useState } from "react";
-import { getProductsFilteredByName, getAllCategories } from "@/lib/getData";
+import { Suspense, useState } from "react";
 import { productsColumns } from "@/components/TableComponent/columns/productsColumns";
 import { Search } from "@/components/Search";
 import ContainerComponents from "@/components/ContainerComponents";
@@ -8,61 +7,40 @@ import { useDebouncedCallback } from 'use-debounce';
 import { DialogToAdd } from "@/components/DialogToAdd";
 import { deleteProduct } from "@/lib/deleteData";
 import useGetProducts from "@/hooks/useGetProducts";
+import { ToastContainer } from "react-toastify";
 
 export default function Products() {
 
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [forceRender, setForceRender] = useState(null);
 
-  const products = useGetProducts();
-
-  useEffect(()=>{
-    if(searchTerm){
-      getProductsFilteredByName(searchTerm)
-        .then((prod)=>{
-          if(prod){
-            setFilteredProducts(
-              prod.map((prod) => ({
-                id: prod.idProducto,
-                name: prod.nombre,
-                price: prod.precio,
-                brand: prod.marca,
-                category: prod.categoria,
-                stock: prod.stock,
-              }))
-            )
-          }
-        })
-    }else{
-      setFilteredProducts([]);
-    }
-  },[searchTerm])
+  const products = useGetProducts(searchTerm,forceRender);
 
   const handleFilter = useDebouncedCallback((search) => {
     setSearchTerm(search);
   },300) 
 
-  const handeDelete = (e) =>{
-    const tableRow = e.target.closest("tr");
-    const id = Number(tableRow.children[0].textContent);
-    deleteProduct(id)
+  const handeDelete = (id) =>{
+    deleteProduct(id);
+    setForceRender(id);
   }
-
-  const tableConfig = {
-    data: filteredProducts.length > 0 ? filteredProducts : products,
-    itemsPerPage: 6,
-    columns: productsColumns,
-    handleDelete: handeDelete
-  };
 
   return (
     <main className="h-full px-10 py-5 flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <Search handleFilter={handleFilter} placeholder="Buscar por nombre"/>
         <DialogToAdd/>
+        <ToastContainer/>
       </div>
       <ContainerComponents>
-        <TableComponent {...tableConfig}/>
+        <Suspense fallback={<p>Cargando...</p>}>
+          <TableComponent
+            data={products}
+            itemsPerPage={6}
+            columns={productsColumns}
+            handleDelete={handeDelete}
+          />
+        </Suspense>
       </ContainerComponents>
     </main>
   );

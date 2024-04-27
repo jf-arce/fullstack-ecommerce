@@ -1,10 +1,12 @@
 import { getAllProducts, getProductsFilteredByName } from "@/lib/getData";
 import { useEffect, useState } from "react";
 
-export default function useGetProducts() {
-    const [products, setProducts] = useState([]);
-  
-    useEffect(() => {
+export default function useGetProducts(search = null, forceRender = null) {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  useEffect(() => {
+    if (!search) {
       getAllProducts().then((products) =>
         setProducts(
           products.map((prod) => ({
@@ -17,8 +19,23 @@ export default function useGetProducts() {
           }))
         )
       );
-    }, [products]);
+    } else {
+      getProductsFilteredByName(search).then((prod) => {
+        if (prod) {
+          setFilteredProducts(
+            prod.map((prod) => ({
+              id: prod.idProducto,
+              name: prod.nombre,
+              price: prod.precio,
+              brand: prod.marca,
+              category: prod.categoria,
+              stock: prod.stock,
+            }))
+          );
+        }
+      });
+    }
+  }, [search,forceRender]);
 
-    return products;
+  return search ? filteredProducts : products;
 }
-

@@ -76,23 +76,34 @@ export const DialogToAdd = () => {
     const sizeChecked = Array.from(size)
       .filter((input) => input.checked === true)
       .map((input) => input.value);
-    const sale = parseFloat(e.target.querySelector("#sale").value);
-
-    const newProduct = {
-      name,
-      brand,
-      category,
-      price,
-      stock,
-      description,
-      size: sizeChecked,
-      sale,
-    };
-
-    createNewProduct(newProduct);
+    if(hasPromotion){
+      const sale = parseFloat(e.target.querySelector("#sale").value);
+      const newProduct = {
+        name,
+        brand,
+        category,
+        price,
+        stock,
+        description,
+        size: sizeChecked,
+        sale,
+      };
+      createNewProduct(newProduct);
+    }else{
+      const newProduct = {
+        name,
+        brand,
+        category,
+        price,
+        stock,
+        description,
+        size: sizeChecked
+      };
+      createNewProduct(newProduct);
+    }
     toast('Producto agregado!',{
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       newestOnTop: false,
       closeOnClick: true,
@@ -103,6 +114,7 @@ export const DialogToAdd = () => {
       theme:"light",
       transition: Bounce
     })
+    setHasPromotion(false);
   };
 
   return (
@@ -230,7 +242,6 @@ export const DialogToAdd = () => {
           </form>
         </DialogContent>
       </Dialog>
-      <ToastContainer/>
     </>
   );
 };

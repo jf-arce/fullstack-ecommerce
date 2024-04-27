@@ -58,7 +58,7 @@ export const TableComponent = ({data,columns,itemsPerPage, handleDelete }) => {
                     variant="solid"
                     highContrast
                     style={{ cursor: "pointer" }}
-                    onClick={handleDelete}
+                    onClick={()=> handleDelete(data.id)}
                   >
                     <FaTrash />
                   </IconButton>

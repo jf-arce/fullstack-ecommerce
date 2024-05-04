@@ -14,15 +14,16 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [forceRender, setForceRender] = useState(null);
 
-  const products = useGetProducts(searchTerm,forceRender);
+  const {products, refreshProducts} = useGetProducts(searchTerm);
 
   const handleFilter = useDebouncedCallback((search) => {
     setSearchTerm(search);
   },300) 
 
   const handeDelete = (id) =>{
-    deleteProduct(id);
-    setForceRender(id);
+    deleteProduct(id).then(()=>{
+      refreshProducts();
+    });
   }
 
   return (

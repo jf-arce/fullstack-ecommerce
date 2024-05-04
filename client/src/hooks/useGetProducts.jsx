@@ -1,15 +1,28 @@
-import { getAllProducts, getProductsFilteredByName } from "@/lib/getData";
 import { useEffect, useState } from "react";
+import { getAllProducts, getProductsFilteredByName } from "@/lib/getData";
 
-export default function useGetProducts(search = null, forceRender = null) {
+export default function useGetProducts(search = null) {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  useEffect(() => {
+  const refreshProducts = async () => {
     if (!search) {
-      getAllProducts().then((products) =>
-        setProducts(
-          products.map((prod) => ({
+      const products = await getAllProducts();
+      setProducts(
+        products.map((prod) => ({
+          id: prod.idProducto,
+          name: prod.nombre,
+          price: prod.precio,
+          brand: prod.marca,
+          category: prod.categoria,
+          stock: prod.stock,
+        }))
+      );
+    } else {
+      const prod = await getProductsFilteredByName(search);
+      if (prod) {
+        setFilteredProducts(
+          prod.map((prod) => ({
             id: prod.idProducto,
             name: prod.nombre,
             price: prod.precio,
@@ -17,25 +30,14 @@ export default function useGetProducts(search = null, forceRender = null) {
             category: prod.categoria,
             stock: prod.stock,
           }))
-        )
-      );
-    } else {
-      getProductsFilteredByName(search).then((prod) => {
-        if (prod) {
-          setFilteredProducts(
-            prod.map((prod) => ({
-              id: prod.idProducto,
-              name: prod.nombre,
-              price: prod.precio,
-              brand: prod.marca,
-              category: prod.categoria,
-              stock: prod.stock,
-            }))
-          );
-        }
-      });
+        );
+      }
     }
-  }, [search,forceRender]);
+  };
 
-  return search ? filteredProducts : products;
+  useEffect(() => {
+    refreshProducts();
+  }, [search]);
+
+  return { products: search ? filteredProducts : products, refreshProducts };
 }

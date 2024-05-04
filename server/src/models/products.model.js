@@ -57,5 +57,8 @@ export class ProductModel{
         await connection.query(`
             DELETE FROM productos WHERE idProducto = ?
         `,[id])
+
+        /*Hay un error cuando se elimina un producto que esta en un pedido, ya 
+        que un producto esta relacionado con la tabla detalle pedido*/
     }
 }

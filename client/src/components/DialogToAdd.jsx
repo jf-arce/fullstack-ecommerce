@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,48 +11,18 @@ import { ButtonCustom } from "@/components/ButtonCustom/ButtonCustom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
-import { createNewProduct } from "@/lib/postData";
-import { getAllCategories } from "@/lib/getData";
-import { Bounce, ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { useState } from "react";
+import { useGetPromotions } from "@/hooks/useGetPromotions";
+import { useGetCategories } from "@/hooks/useGetCategories";
+import { handleSubmitNewProduct } from "@/lib/handleSubmitNewProduct";
 
-const getAllPromotions = async () => {
-  const res = await fetch("http://localhost:1234/promotions");
-  const data = await res.json();
-
-  return data;
-}
-
-export const DialogToAdd = () => {
-
-  const [categories, setCategories ]= useState([]);
-  const [promotions, setPromotions] = useState([]);
-
-  //Fetch de categorias
-  useEffect(()=>{
-    getAllCategories().then((data) => {
-      setCategories(data);
-    });
-  },[])
-
+export const DialogToAdd = ({refreshTable}) => {
+  //Traer las categorias
+  const categories = useGetCategories();
   //Traer las distintas promociones que existen  en la base de datos para mostrarlas en el dialog
-  useEffect(()=>{
-    getAllPromotions().then((proms)=>{
-      setPromotions(proms.map(prom => {
-        return {
-          id: prom.idPromocion,
-          descripcion: prom.descripcion,
-          descuento: prom.descuento,
-          fechaInicio: prom.fechaInicio,
-          fechaFin: prom.fechaFin,
-          estado: prom.estado,
-        }
-      }));
-    });
-  },[])
+  const promotions = useGetPromotions();
 
-  const [hasPromotion, setHasPromotion] = useState(false);
+  const [hasPromotion, setHasPromotion] = useState(false); //Estado para saber si el producto tiene promocion
 
   //Hacer: Cuando cierra el dialog tiene que volver el estado a false
   const handlePromotion = (e) => {
@@ -62,59 +31,6 @@ export const DialogToAdd = () => {
     } else {
       setHasPromotion(false);
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const name = e.target.querySelector("#name").value;
-    const brand = e.target.querySelector("#brand").value;
-    const category = parseInt(e.target.querySelector("#category").value);
-    const price = parseFloat(e.target.querySelector("#price").value);
-    const stock = parseInt(e.target.querySelector("#stock").value);
-    const description = e.target.querySelector("#description").value;
-    const size = e.target.querySelectorAll('input[type="checkbox"]');
-    const sizeChecked = Array.from(size)
-      .filter((input) => input.checked === true)
-      .map((input) => input.value);
-    if(hasPromotion){
-      const sale = parseFloat(e.target.querySelector("#sale").value);
-      const newProduct = {
-        name,
-        brand,
-        category,
-        price,
-        stock,
-        description,
-        size: sizeChecked,
-        sale,
-      };
-      createNewProduct(newProduct);
-    }else{
-      const newProduct = {
-        name,
-        brand,
-        category,
-        price,
-        stock,
-        description,
-        size: sizeChecked
-      };
-      createNewProduct(newProduct);
-    }
-    toast('Producto agregado!',{
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      newestOnTop: false,
-      closeOnClick: true,
-      rtl:false,
-      pauseOnFocusLoss: true,
-      draggable: true,
-      pauseOnHover: true,
-      theme:"light",
-      transition: Bounce
-    })
-    setHasPromotion(false);
   };
 
   return (
@@ -128,7 +44,7 @@ export const DialogToAdd = () => {
             <DialogTitle>Agregar nuevo producto</DialogTitle>
           </DialogHeader>
           {/*Formulario */}
-          <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
+          <form className="grid gap-4 py-4" onSubmit={(e)=>handleSubmitNewProduct(e,hasPromotion,setHasPromotion,refreshTable)}>
             {/*Nombre */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">

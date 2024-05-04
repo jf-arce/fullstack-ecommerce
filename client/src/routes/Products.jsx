@@ -11,38 +11,41 @@ import { ToastContainer } from "react-toastify";
 
 export default function Products() {
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [forceRender, setForceRender] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); //Estado para guardar el valor del input de busqueda
 
-  const {products, refreshProducts} = useGetProducts(searchTerm);
+  //El primer valor es el array de productos y el segundo es la funcion que renderiza de nuevo la tabla
+  const [products, refreshTable] = useGetProducts(searchTerm); 
 
+  //Se usa un debounced para evitar que se hagan muchas peticiones al servidor al escribir en el input
   const handleFilter = useDebouncedCallback((search) => {
     setSearchTerm(search);
   },300) 
 
-  const handeDelete = (id) =>{
+  //Maneja la eliminacion de un producto
+  const handleDelete = (id) =>{
     deleteProduct(id).then(()=>{
-      refreshProducts();
+      //Se vuelven a cargar los productos para que se actualice la tabla sin el producto eliminado
+      refreshTable(); 
     });
   }
 
   return (
     <main className="h-full px-10 py-5 flex flex-col gap-6">
       <div className="flex justify-between items-center">
-        <Search handleFilter={handleFilter} placeholder="Buscar por nombre"/>
-        <DialogToAdd/>
-        <ToastContainer/>
+        <Search handleFilter={handleFilter} placeholder="Buscar por nombre"/> {/*Input de busqueda*/}
+        <DialogToAdd refreshTable={refreshTable}/> {/*Boton para agregar un producto*/}
       </div>
       <ContainerComponents>
         <Suspense fallback={<p>Cargando...</p>}>
           <TableComponent
-            data={products}
-            itemsPerPage={6}
-            columns={productsColumns}
-            handleDelete={handeDelete}
+            data={products} //Array de productos
+            itemsPerPage={6} //Cantidad de items por pagina
+            columns={productsColumns} //Columnas de la tabla
+            handleDelete={handleDelete} //Funcion para eliminar un producto
           />
         </Suspense>
       </ContainerComponents>
+      <ToastContainer/> {/*Componente de notificacion*/}
     </main>
   );
 }

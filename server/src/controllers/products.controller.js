@@ -1,6 +1,5 @@
 import { ProductModel } from "../models/products.model.js";
 
-
 export class ProductController{
     static async getAll(req,res){
         try {
@@ -30,7 +29,7 @@ export class ProductController{
 
         await ProductModel.addProduct({name,brand,category,price,stock,description,sale});
 
-        return res.status(201)
+        return res.status(201).end();
     }
 
     static async deleteProduct(req,res){
@@ -41,6 +40,6 @@ export class ProductController{
 
         // if (!product) return res.status(404).json({message:"No se encuentra el producto"});
 
-        return res.status(204)
+        return res.status(204).end();
     }
 }

@@ -43,7 +43,6 @@ export const getUsersFilteredByName = async(name)=>{
     }
 }
 
-
 //Categories
 export const getAllCategories = async () => {
     try{
@@ -54,4 +53,12 @@ export const getAllCategories = async () => {
     }catch(e){
 
     }
+}
+
+//Promotions
+export const getAllPromotions = async () => {
+    const res = await fetch("http://localhost:1234/promotions");
+    const data = await res.json();
+  
+    return data;
 }

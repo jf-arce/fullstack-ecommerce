@@ -6,9 +6,15 @@ export const useGetCategories = () => {
 
     //Fetch de categorias
     useEffect(()=>{
-      getAllCategories().then((data) => {
-        setCategories(data);
-      });
+      async function getCats(){
+        const cat = await getAllCategories();
+        if(cat.length > 0){
+          setCategories(cat);
+        }else{
+          setCategories([]);
+        }
+      }
+      getCats();
     },[])
 
     return categories;

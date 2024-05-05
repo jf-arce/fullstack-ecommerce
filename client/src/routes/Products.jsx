@@ -7,7 +7,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import { DialogToAdd } from "@/components/DialogToAdd";
 import { deleteProduct } from "@/lib/deleteData";
 import useGetProducts from "@/hooks/useGetProducts";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Bounce, toast } from "react-toastify";
+
 
 export default function Products() {
 
@@ -25,7 +26,21 @@ export default function Products() {
   const handleDelete = (id) =>{
     deleteProduct(id).then(()=>{
       //Se vuelven a cargar los productos para que se actualice la tabla sin el producto eliminado
-      refreshTable(); 
+      refreshTable();
+       //Mostrar una notificacion de que se agrego el producto
+      toast.success('Producto eliminado',{
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        newestOnTop: false,
+        closeOnClick: true,
+        rtl:false,
+        pauseOnFocusLoss: true,
+        draggable: true,
+        pauseOnHover: true,
+        theme:"colored",
+        transition: Bounce,
+      }) 
     });
   }
 

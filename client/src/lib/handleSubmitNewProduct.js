@@ -48,8 +48,8 @@ export const handleSubmitNewProduct = (e,hasPromotion,setHasPromotion,refreshTab
       });
     }
     //Mostrar una notificacion de que se agrego el producto
-    toast('Producto agregado!',{
-      position: "top-right",
+    toast.success('Producto agregado',{
+      position: "bottom-left",
       autoClose: 3000,
       hideProgressBar: false,
       newestOnTop: false,
@@ -58,7 +58,7 @@ export const handleSubmitNewProduct = (e,hasPromotion,setHasPromotion,refreshTab
       pauseOnFocusLoss: true,
       draggable: true,
       pauseOnHover: true,
-      theme:"light",
+      theme:"colored",
       transition: Bounce
     })
     setHasPromotion(false); //Se vuelve a poner el estado de si tiene promocion en false

@@ -11,6 +11,7 @@ import { IconButton } from "@radix-ui/themes";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { PaginationComponent } from "./PaginationComponent.jsx";
 import { useState } from "react";
+import { DialogToUpdate } from "../DialogToUpdate.jsx";
 
 export const TableComponent = ({data,columns,itemsPerPage, handleDelete }) => {
  
@@ -53,13 +54,7 @@ export const TableComponent = ({data,columns,itemsPerPage, handleDelete }) => {
               <TableCell>
                 <div className="flex items-center gap-4 justify-end">
                   {/* Boton de editar*/}
-                  <IconButton
-                    variant="solid"
-                    highContrast
-                    style={{ cursor: "pointer" }}
-                  >
-                    <FaEdit />
-                  </IconButton>
+                  <DialogToUpdate refreshTable={handleDelete}/> {/*Boton para editar un producto*/}
                   {/* Boton de eliminar*/}
                   <IconButton
                     variant="solid"

@@ -137,10 +137,10 @@ export const DialogToAdd = ({refreshTable}) => {
               /* Si se selecciona que si posee promocion, se muestra el select con las promociones disponibles */
               hasPromotion && (
                 <div className="flex gap-3 justify-center items-center">
-                  <Label htmlFor="sale" className="text-right">
+                  <Label htmlFor="promotion" className="text-right">
                     Seleccionar promocion
                   </Label>
-                  <select id="sale" className="col-span-3 w-full">
+                  <select id="promotion" className="col-span-3 w-full">
                     {promotions.map((promo) => (
                       <option key={promo.id} value={promo.id}>
                         {promo.descripcion}

@@ -1,4 +1,4 @@
-import { getAllPromotions } from "@/lib/getData";
+import { getAllPromotions } from "@/services/getData";
 import { useState, useEffect } from "react";
 
 export const useGetPromotions = () => {

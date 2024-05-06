@@ -1,4 +1,4 @@
-import { getAllCategories } from "@/lib/getData";
+import { getAllCategories } from "@/services/getData";
 import { useEffect, useState } from "react";
 
 export const useGetCategories = () => {

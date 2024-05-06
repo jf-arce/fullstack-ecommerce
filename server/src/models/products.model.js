@@ -16,9 +16,7 @@ export class ProductModel{
         return products;
     }
 
-    static async addProduct({name,brand,category,price,stock,description,sale}){
-
-        const promotion = sale ?? 1
+    static async create({name,brand,category,price,stock,description,promotion,size}){
 
         const [result] = await connection.query(
             `INSERT INTO Productos (nombre, descripcion, marca, precio, idCategoria, idPromocion) 
@@ -31,15 +29,16 @@ export class ProductModel{
         await connection.query(
             `INSERT INTO Inventario (idProducto, stock) VALUES (?,?)`, [idProducto, stock]
         )
-
-        //Falta pasarle el id del talle desde el cliente
-        await connection.query(
-            `INSERT INTO ProductosTalles(idTalle, idProducto) VALUES (1,?)`, [idProducto]
-        )
-        
+      
+        // Insertamos la asociación de producto con cada tamaño disponible
+        for (const sizeId of size) {
+            await connection.query(
+                `INSERT INTO ProductosTalles (idTalle, idProducto) VALUES (?,?)`, [sizeId, idProducto]
+            );
+        }
     }
 
-    static async deleteProduct({id}){
+    static async delete({id}){
 
         console.log(id);
         await connection.query(`
@@ -61,4 +60,65 @@ export class ProductModel{
         /*Hay un error cuando se elimina un producto que esta en un pedido, ya 
         que un producto esta relacionado con la tabla detalle pedido*/
     }
+
+    static async update({prod,id}){
+        const updateFields = [];
+        const updateValues = [];
+    
+        if (prod.name) {
+            updateFields.push('nombre = ?');
+            updateValues.push(prod.name);
+        }
+        if (prod.brand) {
+            updateFields.push('marca = ?');
+            updateValues.push(prod.brand);
+        }
+        if (prod.category) {
+            updateFields.push('idCategoria = ?');
+            updateValues.push(prod.category);
+        }
+        if (prod.price) {
+            updateFields.push('precio = ?');
+            updateValues.push(prod.price);
+        }
+        if (prod.description) {
+            updateFields.push('descripcion = ?');
+            updateValues.push(prod.description);
+        }
+        if (prod.promotion) {
+            updateFields.push('idPromocion = ?');
+            updateValues.push(prod.promotion);
+        }
+
+        if (updateFields.length > 0 && updateValues.length > 0) {
+            // Agregar el ID al final
+            updateValues.push(id);  
+            // Construir la consulta SQL de actualización
+            //Con el join concatena cada elemento del array separados por una coma
+            const updateQuery = `UPDATE Productos SET ${updateFields.join(', ')} WHERE idProducto = ?`;
+            
+            await connection.query(updateQuery, updateValues);
+        }
+      
+        if (prod.stock){
+            await connection.query(`
+                UPDATE Inventario SET stock = ? WHERE idProducto = ?
+            `, [prod.stock, id])
+        }
+
+        // Actualizar los tamaños en la tabla ProductosTalles
+        if (prod.size) {
+            // Eliminar todos los tamaños asociados al producto
+            await connection.query(`
+                DELETE FROM ProductosTalles WHERE idProducto = ?
+            `, [id]);
+
+            // Insertar los nuevos tamaños asociados al producto
+            for (const sizeId of prod.size) {
+                await connection.query(`
+                    INSERT INTO ProductosTalles (idTalle, idProducto) VALUES (?, ?)
+                `, [sizeId, id]);
+            }
+        }
+    }   
 }

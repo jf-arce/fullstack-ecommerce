@@ -3,7 +3,7 @@ import ContainerComponents from "@/components/ContainerComponents";
 import { Search } from "@/components/Search";
 import { TableComponent } from "@/components/TableComponent/TableComponent";
 import { usersColumns } from "@/components/TableComponent/columns/usersColumns";
-import { getAllUsers, getUsersFilteredByName } from "@/lib/getData";
+import { getAllUsers, getUsersFilteredByName } from "@/services/getData";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from 'use-debounce';
 

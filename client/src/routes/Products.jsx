@@ -5,10 +5,9 @@ import { Search } from "@/components/Search";
 import ContainerComponents from "@/components/ContainerComponents";
 import { useDebouncedCallback } from 'use-debounce';
 import { DialogToAdd } from "@/components/DialogToAdd";
-import { deleteProduct } from "@/lib/deleteData";
+import { deleteProduct } from "@/services/deleteData";
 import useGetProducts from "@/hooks/useGetProducts";
 import { ToastContainer, Bounce, toast } from "react-toastify";
-
 
 export default function Products() {
 
@@ -54,7 +53,7 @@ export default function Products() {
         <Suspense fallback={<p>Cargando...</p>}>
           <TableComponent
             data={products} //Array de productos
-            itemsPerPage={6} //Cantidad de items por pagina
+            itemsPerPage={10} //Cantidad de items por pagina
             columns={productsColumns} //Columnas de la tabla
             handleDelete={handleDelete} //Funcion para eliminar un producto
           />

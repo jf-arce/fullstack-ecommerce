@@ -31,3 +31,15 @@ GET http://localhost:1234/categories
 
 ###
 GET http://localhost:1234/promotions
+
+###
+PATCH http://localhost:1234/products/148
+Content-Type: application/json
+
+{
+    "name": "media",
+    "brand": "vanz",
+    "category": 1,
+    "promotion": 20,
+    "size": [1,4,3]
+}

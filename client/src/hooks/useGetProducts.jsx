@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllProducts, getProductsFilteredByName } from "@/lib/getData";
+import { getAllProducts, getProductsFilteredByName } from "@/services/getData";
 
 export default function useGetProducts(search = null) {
   const [products, setProducts] = useState([]); //Estado para guardar los productos

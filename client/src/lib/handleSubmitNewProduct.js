@@ -1,4 +1,4 @@
-import { createNewProduct } from "./postData";
+import { createNewProduct } from "@/services/postData";
 import { Bounce, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,11 +15,11 @@ export const handleSubmitNewProduct = (e,hasPromotion,setHasPromotion,refreshTab
     const size = e.target.querySelectorAll('input[type="checkbox"]'); //Devuelve un NodeList
     const sizeChecked = Array.from(size) //Convertir a un array
       .filter((input) => input.checked === true) //Filtrar los que esten seleccionados
-      .map((input) => input.value); //y luego mapeo para obtener solo los valores 
+      .map((input) =>  parseInt(input.value)); //y luego mapeo para obtener solo los valores 
     
     //Si tiene promocion, se obtiene el valor del select
     if(hasPromotion){
-      const sale = parseFloat(e.target.querySelector("#sale").value);
+      const promotion = parseFloat(e.target.querySelector("#promotion").value);
       const newProduct = {
         name,
         brand,
@@ -28,7 +28,7 @@ export const handleSubmitNewProduct = (e,hasPromotion,setHasPromotion,refreshTab
         stock,
         description,
         size: sizeChecked,
-        sale,
+        promotion,
       };
       createNewProduct(newProduct).then(()=>{
         refreshTable(); //Se renderiza de nuevo la tabla

@@ -1,4 +1,5 @@
 import { ProductModel } from "../models/products.model.js";
+import { validatePartialProduct, validateProduct } from "../schemas/product.schema.js";
 
 export class ProductController{
     static async getAll(req,res){
@@ -17,29 +18,37 @@ export class ProductController{
     }
 
     static async addProduct(req,res){
-        const{
-            name,
-            brand,
-            category,
-            price,
-            stock,
-            description,
-            sale
-        } = req.body;
-
-        await ProductModel.addProduct({name,brand,category,price,stock,description,sale});
-
+        //Validamos el objeto recibido del body
+        const prodValidated = validateProduct(req.body); //En el req.body esta el producto nuevo que se quiere agregar
+        
+        if (prodValidated.success){
+            await ProductModel.create(prodValidated.data);
+        }else{
+            return res.status(500).json(prodValidated.error);
+        }
+    
         return res.status(201).end();
     }
 
     static async deleteProduct(req,res){
         const {id} = req.params;
 
-        
-        await ProductModel.deleteProduct({id});
-
-        // if (!product) return res.status(404).json({message:"No se encuentra el producto"});
+        await ProductModel.delete({id});
 
         return res.status(204).end();
+    }
+
+    static async updateProduct(req,res){
+        const {id} = req.params;
+
+        //Validamos el objeto recibido del body
+        const prodValidated = validatePartialProduct(req.body); 
+        
+        if(prodValidated.success){
+            await ProductModel.update({prod:prodValidated.data, id})
+            return res.status(204).end();
+        }else{
+            return res.status(500).json(prodValidated.error);
+        }
     }
 }

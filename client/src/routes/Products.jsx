@@ -8,6 +8,7 @@ import { DialogToAdd } from "@/components/DialogToAdd";
 import { deleteProduct } from "@/services/deleteData";
 import useGetProducts from "@/hooks/useGetProducts";
 import { ToastContainer, Bounce, toast } from "react-toastify";
+import { getProduct } from "@/services/getData";
 
 export default function Products() {
 
@@ -43,6 +44,19 @@ export default function Products() {
     });
   }
 
+  //Seguir haciendo el modificar producto
+  const [productRec, setProductRec] = useState(0);
+  const handleUpdate = (id) =>{
+  
+    getProduct(id).then((data)=>{
+      setProductRec(data.id)
+      console.log(data.id);
+    })
+    
+   
+  }
+
+
   return (
     <main className="h-full px-10 py-5 flex flex-col gap-6">
       <div className="flex justify-between items-center">
@@ -56,6 +70,7 @@ export default function Products() {
             itemsPerPage={10} //Cantidad de items por pagina
             columns={productsColumns} //Columnas de la tabla
             handleDelete={handleDelete} //Funcion para eliminar un producto
+            handleUpdate={handleUpdate} //Funcion para editar un producto
           />
         </Suspense>
       </ContainerComponents>

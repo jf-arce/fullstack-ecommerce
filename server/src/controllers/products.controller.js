@@ -17,6 +17,14 @@ export class ProductController{
         }
     }
 
+    static async getProduct(req,res){
+        const {id} = req.params;
+        
+        console.log(id);
+
+    return res.json({id: id})
+    }
+
     static async addProduct(req,res){
         //Validamos el objeto recibido del body
         const prodValidated = validateProduct(req.body); //En el req.body esta el producto nuevo que se quiere agregar

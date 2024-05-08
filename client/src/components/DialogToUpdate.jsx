@@ -18,7 +18,14 @@ import {
   import { IconButton } from "@radix-ui/themes";
     import { FaEdit } from "react-icons/fa";
   
-  export const DialogToUpdate = ({refreshTable}) => {
+  export const DialogToUpdate = ({refreshTable,handleUpdate, id}) => {
+
+    //Cosas para hacer
+    //Traer el objeto lleno con los datos del producto para mostrar por defecto en el formulario
+  
+
+
+
     //Traer las categorias
     const categories = useGetCategories();
     //Traer las distintas promociones que existen  en la base de datos para mostrarlas en el dialog
@@ -35,17 +42,22 @@ import {
       }
     };
   
+  
     return (
       <>
         <Dialog>
           <DialogTrigger>
-            <IconButton
+
+            {/* <IconButton
                 variant="solid"
                 highContrast
                 style={{ cursor: "pointer" }}
+                onClick={()=>handleUpdate(id)}
             >
-                <FaEdit />
-            </IconButton>
+                
+            </IconButton> */}
+           
+            <FaEdit onClick={()=>handleUpdate(id)}/>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

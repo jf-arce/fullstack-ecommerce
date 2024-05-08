@@ -32,6 +32,23 @@ export const getProductsFilteredByName = async(name)=>{
     }
 }
 
+export const getProduct = async (id) =>{
+    try{
+        const res = await fetch(`http://localhost:1234/products/${id}`);
+        const data = await res.json();
+
+        if(res.ok){
+            console.log(data);
+            return data;
+        }else{
+            return []
+        }
+    }catch(e){
+        console.log("Error al buscar el producto",e);
+        return []
+    }
+}
+
 //Users
 export const getAllUsers = async () =>{
     try{

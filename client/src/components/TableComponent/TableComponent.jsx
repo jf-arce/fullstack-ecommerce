@@ -13,7 +13,7 @@ import { PaginationComponent } from "./PaginationComponent.jsx";
 import { useState } from "react";
 import { DialogToUpdate } from "../DialogToUpdate.jsx";
 
-export const TableComponent = ({data,columns,itemsPerPage, handleDelete }) => {
+export const TableComponent = ({data,columns,itemsPerPage, handleDelete, handleUpdate }) => {
  
   const [currentPage, setCurrentPage] = useState(1); //estado para guardar la pagina actual
   
@@ -54,7 +54,7 @@ export const TableComponent = ({data,columns,itemsPerPage, handleDelete }) => {
               <TableCell>
                 <div className="flex items-center gap-4 justify-end">
                   {/* Boton de editar*/}
-                  <DialogToUpdate refreshTable={handleDelete}/> {/*Boton para editar un producto*/}
+                  <DialogToUpdate handleUpdate={handleUpdate} id={data.id}/> {/*Boton para editar un producto*/}
                   {/* Boton de eliminar*/}
                   <IconButton
                     variant="solid"
